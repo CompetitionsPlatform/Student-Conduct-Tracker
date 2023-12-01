@@ -70,7 +70,11 @@ class Karma(db.Model):
       student.karmaID = karma.karmaID
 
   # Commit the changes to the database
-    db.session.commit()
+    try:
+      db.session.commit()
+    except Exception as e:
+        print('error updating karma rank')
+        db.session.rollback()
 
   @classmethod
   def getScore(cls, karmaID):

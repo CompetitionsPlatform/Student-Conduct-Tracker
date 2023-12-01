@@ -43,9 +43,15 @@ class Staff(User):
   def createReview(self, student, isPositive, comment):
     review = Review(self, student, isPositive, comment)
     student.reviews.append(review)  #add review to the student
-    db.session.add(review)  #add to db
-    db.session.commit()
-    return review
+    
+    try:
+      db.session.add(review)  #add to db
+      db.session.commit()
+      return review
+    except Exception as e:
+      print('error creating review')
+      db.session.rollback()
+      return None
 
   def searchStudent(self, searchTerm):
     # Query the Student model for a student by ID or first name, or last name

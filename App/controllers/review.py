@@ -18,18 +18,26 @@ def edit_review(review, staff, is_positive, comment):
     if review.reviewer == staff:
         review.isPositive = is_positive
         review.comment = comment
-        db.session.add(review)
-        db.session.commit()
-        return review
-    return None
+        try:
+            db.session.add(review)
+            db.session.commit()
+            return review
+        except Exception as e:
+            print('error editing review')
+            db.session.rollback()
+            return None
 
 
 def delete_review(review, staff):
     if review.reviewer == staff:
-        db.session.delete(review)
-        db.session.commit()
-        return True
-    return None
+        try:
+            db.session.delete(review)
+            db.session.commit()
+            return True
+        except Exception as e:
+            print('error deleting review')
+            db.session.rollback()
+            return None
 
 
 def downvoteReview(reviewID, staff):
@@ -45,9 +53,16 @@ def downvoteReview(reviewID, staff):
             if staff in review.staffUpvoters:  # if they had upvoted previously then remove their upvote to account for switching between votes
                 review.upvotes -= 1
                 review.staffUpvoters.remove(staff)
+            
+        try:
+            db.session.add(review)
+            db.session.commit()
 
-        db.session.add(review)
-        db.session.commit()
+        except Exception as e:
+            print('error downvoting review')
+            db.session.rollback()
+            return None
+            
         # Retrieve the associated Student object using studentID
         student = db.session.query(Student).get(review.studentID)
 
@@ -83,8 +98,14 @@ def upvoteReview(reviewID, staff):
                 review.downvotes -= 1
                 review.staffDownvoters.remove(staff)
 
-        db.session.add(review)
-        db.session.commit()
+        try:
+            db.session.add(review)
+            db.session.commit()
+        except Exception as e:
+            print('error downvoting review')
+            db.session.rollback()
+            return None
+        
         # Retrieve the associated Student object using studentID
         student = db.session.query(Student).get(review.studentID)
 

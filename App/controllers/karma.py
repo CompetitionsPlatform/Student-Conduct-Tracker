@@ -27,8 +27,13 @@ def calculate_student_karma(student):
         db.session.flush() 
         student.karmaID = karma.karmaID
 
-    db.session.commit()
-    return karma
+    try:
+        db.session.commit()
+        return karma
+    except Exception as e:
+        print('error calculating karma')
+        db.session.rollback()
+        return None
 
 def update_student_karma_rankings():
     students_with_karma = db.session.query(Student, Karma)\
@@ -51,4 +56,10 @@ def update_student_karma_rankings():
             prev_score = karma.score
 
         student.karmaID = karma.karmaID
-    db.session.commit()
+    
+    try:
+        db.session.commit()
+    except Exception as e:
+        print('error calculating karma')
+        db.session.rollback()
+        return None
