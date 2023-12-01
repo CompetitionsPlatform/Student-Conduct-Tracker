@@ -17,29 +17,35 @@ class Admin(User):
 	def addStudent(self, id, firstname, lastname, password, contact, studentType, yearofStudy):
 		newStudent= Student(id, firstname, lastname, password, contact, studentType, yearofStudy)
 		
-		db.session.add(newStudent)
-		db.session.commit()  # Commit to save the new student to the database
-		return newStudent 
+		try:
+			db.session.add(newStudent)
+			db.session.commit()  # Commit to save the new student to the database
+			return newStudent
+		except Exception as e:
+			print('error adding student')
+			db.session.rollback()
+			return None
 
 	# add staff to the database
 	def addStaff(self, id, firstname, lastname, password, email, teachingExperience):
 		newStaff= Staff(id, firstname, lastname, password, email, teachingExperience)
-			
-		db.session.add(newStaff)
-		db.session.commit()  # Commit to save the new staff to the database
-		return newStaff
+		
+		try:
+			db.session.add(newStaff)
+			db.session.commit()  # Commit to save the new staff to the database
+			return newStaff
+		except Exception as e:
+			print('error adding staff')
+			db.session.rollback()
+			return None
+
 
 	#takes a studentID, string for field_to_update and new_value . Updates the  relative field for the student
 	def updateStudent(self, studentID, field_to_update, new_value):
-		# List of fields that can be updated for a student record
-		allowed_fields = ["ID", "contact", "firstname", "lastname", "password", "studenttype", "yearofstudy"]
-
-		# Normalize the input field name by converting it to lowercase and replacing '-', '_', ' ' with ''
-		input_field = field_to_update.lower().replace('-', '').replace('_', '').replace(' ', '')
-
-	# Retrieve the student record based on student id
-		student = Student.query.filter_by(ID=studentID).first()
-
+		allowed_fields = ["ID", "contact", "firstname", "lastname", "password", "studenttype", "yearofstudy"]# List of fields that can be updated for a student record
+		input_field = field_to_update.lower().replace('-', '').replace('_', '').replace(' ', '')# Normalize the input field name by converting it to lowercase and replacing '-', '_', ' ' with ''
+		
+		student = Student.query.filter_by(ID=studentID).first() # Retrieve the student record based on student id
 		if student is None:
 			return "Student not found"
 
@@ -61,9 +67,14 @@ class Admin(User):
 		setattr(student, found_field, new_value)
 
 		# Commit to save the changes
-		db.session.add(student)
-		db.session.commit()
-		return True
+		try:
+			db.session.add(student)
+			db.session.commit()
+			return True
+		except Exception as e:
+			print('error updating student')
+			db.session.rollback()
+			return False
 	
 	def to_json(self):
 		return {
