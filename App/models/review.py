@@ -3,6 +3,8 @@ from .student import Student
 from datetime import datetime
 from .karma import Karma
 
+from .publisher import *
+
 # Define the association table for staff upvotes on reviews
 review_staff_upvoters = db.Table(
     'review_staff_upvoters',
@@ -30,6 +32,8 @@ class Review(db.Model):
   isPositive = db.Column(db.Boolean, nullable=False)
   created = db.Column(db.DateTime, default=datetime.utcnow)
   comment = db.Column(db.String(400), nullable=False)
+
+  subscibers = [] #field for subscribers
 
   # initialize the review. when it is created the date is automatically gotten and votes are at 0
   def __init__(self, reviewer, student, isPositive, comment):
