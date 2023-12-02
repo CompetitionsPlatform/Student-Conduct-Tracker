@@ -4,7 +4,8 @@ from .staff import Staff
 from .user import User
 
 class Admin(User):
-	ID= db.Column(db.String, primary_key= True)
+	__tablename__ = 'admin'
+	ID = db.Column(db.String, primary_key=True)
 
 	def __init__(self, firstname, lastname, password):
 		"""
