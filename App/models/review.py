@@ -3,8 +3,6 @@ from .student import Student
 from datetime import datetime
 from .karma import Karma
 
-from .publisher import *
-
 # Define the association table for staff upvotes on reviews
 review_staff_upvoters = db.Table(
     'review_staff_upvoters',
@@ -33,7 +31,7 @@ class Review(db.Model):
   created = db.Column(db.DateTime, default=datetime.utcnow)
   comment = db.Column(db.String(400), nullable=False)
 
-  subscribers = [] #field for subscribers
+  subscribers = db.relationship('Karma', backref='review', lazy=True)
 
   def __init__(self, reviewer, student, isPositive, comment):
     """
@@ -95,6 +93,8 @@ class Review(db.Model):
     """
     if self.reviewer == staff:
       db.session.delete(self)
+      self.removeSubscriber()
+      self.notifySubscriber()
       db.session.commit()
       return True
     return None
@@ -122,7 +122,7 @@ class Review(db.Model):
     db.session.add(self)
     db.session.commit()
     
-    self.updateKarma()
+    self.notifySubscriber()
     
     return self.upvotes
 
@@ -149,7 +149,7 @@ class Review(db.Model):
     db.session.add(self)
     db.session.commit()
 
-    self.updateKarma()
+    self.notifySubscriber()
 
     return self.downvotes
   
@@ -190,3 +190,16 @@ class Review(db.Model):
         "downvotes": self.downvotes,
         "comment": self.comment
     }
+
+  def addSubscriber(self, subscriber):
+    if subscriber not in self.subscribers:
+      self.subscribers.append(subscriber)
+
+  def removeSubscriber(self):
+    for subscriber in self.subscribers:
+      if subscriber in self.subscribers:
+        self.subscribers.remove(subscriber)
+
+  def notifySubscriber(self):
+    for subscriber in self.subscribers:
+      subscriber.update()

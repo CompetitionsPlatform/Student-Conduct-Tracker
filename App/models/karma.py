@@ -1,12 +1,12 @@
 from App.database import db
 from .student import Student
 
-
 class Karma(db.Model):
   __tablename__ = "karma"
   karmaID = db.Column(db.Integer, primary_key=True)
   score = db.Column(db.Float, nullable=False, default=0.0)
   rank = db.Column(db.Integer, nullable=False, default=-99)
+  review_id = db.Column(db.Integer, db.ForeignKey('review.ID'), nullable=True, unique=True)
 
   def __init__(self, score=0.0, rank=-99):
     """
@@ -119,3 +119,7 @@ class Karma(db.Model):
     if karma:
       return karma.score
     return None
+
+  def update(self):
+    self.calculateScore()
+    self.updateRank()
