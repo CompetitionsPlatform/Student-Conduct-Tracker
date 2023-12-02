@@ -17,7 +17,7 @@ def generate_random_contact_number():
     return f"0000-{random.randint(100, 999)}-{random.randint(1000, 9999)}"
 
 
-@index_views.route('/init', methods=['POST'])
+@index_views.route('/init', methods=['GET'])
 def init():
   db.drop_all()
   db.create_all()
