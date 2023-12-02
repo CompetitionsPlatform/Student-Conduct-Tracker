@@ -13,6 +13,6 @@ class Subscriber(db.Model):
   
     def update(self):
       print(f'{self.name}: updating')
-      self.state.append(State)
+      #self.state.append(State)
       db.session.add(self)
       db.session.commit()
