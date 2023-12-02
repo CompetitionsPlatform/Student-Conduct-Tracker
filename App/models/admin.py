@@ -16,36 +16,22 @@ class Admin(User):
 	#add student to the database
 	def addStudent(self, id, firstname, lastname, password, contact, studentType, yearofStudy):
 		newStudent= Student(id, firstname, lastname, password, contact, studentType, yearofStudy)
-		
-		try:
-			db.session.add(newStudent)
-			db.session.commit()  # Commit to save the new student to the database
-			return newStudent
-		except Exception as e:
-			print('error adding student')
-			db.session.rollback()
-			return None
+		return self.dataCommit(newStudent)
 
 	# add staff to the database
 	def addStaff(self, id, firstname, lastname, password, email, teachingExperience):
 		newStaff= Staff(id, firstname, lastname, password, email, teachingExperience)
 		
-		try:
-			db.session.add(newStaff)
-			db.session.commit()  # Commit to save the new staff to the database
-			return newStaff
-		except Exception as e:
-			print('error adding staff')
-			db.session.rollback()
-			return None
+		return self.dataCommit(newStaff)
 
 
 	#takes a studentID, string for field_to_update and new_value . Updates the  relative field for the student
 	def updateStudent(self, studentID, field_to_update, new_value):
 		allowed_fields = ["ID", "contact", "firstname", "lastname", "password", "studenttype", "yearofstudy"]# List of fields that can be updated for a student record
-		input_field = field_to_update.lower().replace('-', '').replace('_', '').replace(' ', '')# Normalize the input field name by converting it to lowercase and replacing '-', '_', ' ' with ''
 		
-		student = Student.query.filter_by(ID=studentID).first() # Retrieve the student record based on student id
+		input_field = self.normalizeField(field_to_update)
+		
+		student = self.getStudentByID(studentID)
 		if student is None:
 			return "Student not found"
 
@@ -67,14 +53,11 @@ class Admin(User):
 		setattr(student, found_field, new_value)
 
 		# Commit to save the changes
-		try:
-			db.session.add(student)
-			db.session.commit()
+		save = self.dataCommit(student)
+
+		if save:
 			return True
-		except Exception as e:
-			print('error updating student')
-			db.session.rollback()
-			return False
+		return False
 	
 	def to_json(self):
 		return {
@@ -82,3 +65,24 @@ class Admin(User):
     	    "firstname": self.firstname,
         	"lastname": self.lastname,
     	}
+	
+	@staticmethod
+	def dataCommit(entity):
+		try:
+			db.session.add(entity)
+			db.session.commit()
+			return entity
+		except Exception as e:
+			db.session.rollback()
+			print(f'Error: {e}')
+			return None
+	
+	@staticmethod
+	def normalizeField(field_to_update):
+		return field_to_update.lower().replace('-', '').replace('_', '').replace(' ', '')
+	
+	def getStudentByID(id):
+		student = Student.query.filter_by(ID=id).first() # Retrieve the student record based on student id
+		if student:
+			return student
+		return None
