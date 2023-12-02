@@ -33,7 +33,7 @@ class Review(db.Model):
   created = db.Column(db.DateTime, default=datetime.utcnow)
   comment = db.Column(db.String(400), nullable=False)
 
-  subscibers = [] #field for subscribers
+  subscribers = [] #field for subscribers
 
   # initialize the review. when it is created the date is automatically gotten and votes are at 0
   def __init__(self, reviewer, student, isPositive, comment):
@@ -71,77 +71,59 @@ class Review(db.Model):
     return None
 
   #adds 1 to the upvotes for the review when called
-  def upvoteReview(self, staff): 
-    if staff in self.staffUpvoters:  # If they upvoted the review already, return current votes
+  def upvoteReview(self, staff):
+    if staff in self.staffUpvoters:
       return self.upvotes
-
-    else:
-      if staff not in self.staffUpvoters:  #if staff has not upvoted allow the vote
-        self.upvotes += 1
-        self.staffUpvoters.append(staff)
-
-        if staff in self.staffDownvoters:  #if they had downvoted previously then remove their downvote to account for switching between votes
-          self.downvotes -= 1
-          self.staffDownvoters.remove(staff)
-
-      db.session.add(self)
-      db.session.commit()
-
-      # Retrieve the associated Student object using studentID
-      student = Student.query.get(self.studentID)
-
-      # Check if the student has a Karma record (karmaID) and create a new Karma record for them if not
-      if student.karmaID is None:
-        karma = Karma(score=0.0, rank=-99)
-        db.session.add(karma)  # Add the Karma record to the session
-        db.session.flush()  # Ensure the Karma record gets an ID
-        student.karmaID = karma.karmaID  # Set the student's karmaID to the new Karma record's ID
-
-      # Update Karma for the student
-      student_karma = Karma.query.get(student.karmaID)
-      student_karma.calculateScore(student)
-      student_karma.updateRank()
-      db.session.commit()
-
+    
+    self.upvotes += 1
+    self.staffUpvoters.append(staff)
+    
+    if staff in self.staffDownvoters:
+      self.downvotes -= 1
+      self.staffDownvoters.remove(staff)
+    
+    db.session.add(self)
+    db.session.commit()
+    
+    self.updateKarma()
+    
     return self.upvotes
 
-  #adds 1 to the downvotes for the review when called
 
-  def downvoteReview(self, staff): 
-    if staff in self.staffDownvoters:  # If they downvoted the review already, return current votes
+  #adds 1 to the downvotes for the review when called
+  def downvoteReview(self, staff):
+    if staff in self.staffDownvoters:
       return self.downvotes
 
-    else:
-      if staff not in self.staffDownvoters:  #if staff has not downvoted allow the vote
-        self.downvotes += 1
-        self.staffDownvoters.append(staff)
+    self.downvotes += 1
+    self.staffDownvoters.append(staff)
 
-        if staff in self.staffUpvoters:  #if they had upvoted previously then remove their upvote to account for switching between votes
-          self.upvotes -= 1
-          self.staffUpvoters.remove(staff)
+    if staff in self.staffUpvoters:
+      self.upvotes -= 1
+      self.staffUpvoters.remove(staff)
 
-      db.session.add(self)
-      db.session.commit()
-      # Retrieve the associated Student object using studentID
-      student = Student.query.get(self.studentID)
+    db.session.add(self)
+    db.session.commit()
 
-      # Check if the student has a Karma record (karmaID) and create a new Karma record for them if not
-      if student.karmaID is None:
-        karma = Karma(score=0.0, rank=-99)
-        db.session.add(karma)  # Add the Karma record to the session
-        db.session.flush()  # Ensure the Karma record gets an ID
-        db.session.commit()
-        student.karmaID = karma.karmaID  # Set the student's karmaID to the new Karma record's ID
+    self._update_karma()
 
-  # Update Karma for the student
+    return self.downvotes
+  
+  def updateKarma(self):
+    student = Student.query.get(self.studentID)
+    
+    if student.karmaID is None:
+      karma = Karma(score=0.0, rank=-99)
+      db.session.add(karma)
+      db.session.flush()
+      student.karmaID = karma.karmaID
+
       student_karma = Karma.query.get(student.karmaID)
       student_karma.calculateScore(student)
       student_karma.updateRank()
-
-    return self.downvotes
-
+      db.session.commit()
+  
   #return json representation of the review
-
   def to_json(self):
     return {
         "reviewID": self.ID,

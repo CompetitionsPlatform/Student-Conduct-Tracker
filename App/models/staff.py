@@ -44,14 +44,7 @@ class Staff(User):
     review = Review(self, student, isPositive, comment)
     student.reviews.append(review)  #add review to the student
     
-    try:
-      db.session.add(review)  #add to db
-      db.session.commit()
-      return review
-    except Exception as e:
-      print('error creating review')
-      db.session.rollback()
-      return None
+    return self.dataCommit(review)
 
   def searchStudent(self, searchTerm):
     # Query the Student model for a student by ID or first name, or last name
@@ -91,3 +84,14 @@ class Staff(User):
     else:
       # If no students with rankings are found, return an empty list
       return []
+
+  @staticmethod
+  def dataCommit(entity):
+    try:
+      db.session.add(entity)
+      db.session.commit()
+      return entity
+    except Exception as e:
+      db.session.rollback()
+      print(f'Error: {e}')
+      return None

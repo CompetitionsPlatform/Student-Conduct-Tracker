@@ -30,7 +30,7 @@ class Karma(db.Model):
         badKarma += review.upvotes
         goodKarma += review.downvotes
 
-# Calculate the karma score
+    # Calculate the karma score
     self.score = goodKarma - badKarma
 
     # connect the karma record to the student
@@ -73,8 +73,8 @@ class Karma(db.Model):
     try:
       db.session.commit()
     except Exception as e:
-        print('error updating karma rank')
-        db.session.rollback()
+      print('error updating karma rank')
+      db.session.rollback()
 
   @classmethod
   def getScore(cls, karmaID):
