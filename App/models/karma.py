@@ -9,15 +9,35 @@ class Karma(db.Model):
   rank = db.Column(db.Integer, nullable=False, default=-99)
 
   def __init__(self, score=0.0, rank=-99):
+    """
+    Initialize a new Karma object with the given score and rank.
+
+    Args:
+        score (float, optional): The initial score of the Karma object. Defaults to 0.0.
+        rank (int, optional): The initial rank of the Karma object. Defaults to -99.
+    """
     self.score = score
     self.rank = rank
 
   def to_json(self):
+    """
+    Convert the Karma object to a JSON-compatible dictionary.
+
+    Returns:
+        dict: A dictionary representing the Karma object with keys for 'karmaID', 'score', and 'rank'.
+    """
     return {"karmaID": self.karmaID, "score": self.score, "rank": self.rank}
 
-# Calculate the karma score for the provided student based on reviews
-
   def calculateScore(self, student):
+    """
+    Calculate the Karma score based on the student's reviews.
+
+    Args:
+        student (Student): The Student object for which the Karma score is calculated.
+
+    Returns:
+        float: The calculated Karma score.
+    """
     goodKarma = 0
     badKarma = 0
 
@@ -37,13 +57,20 @@ class Karma(db.Model):
     student.karmaID = self.karmaID
 
     # Commit the changes to the database
-    db.session.add(self)
-    db.session.commit()
-
-    return self.score
+    try:
+      db.session.add(self)
+      db.session.commit()
+      return self.score
+    except Exception as e:
+      print(f'error calculating karma score {e}')
+      db.session.rollback()
+      return None
 
   @classmethod
   def updateRank(cls):
+    """
+    Update the rank of students based on their Karma scores.
+    """
     # Calculate the rank of students based on their karma score
 
     # Query all students with karma scores in descending order
@@ -73,11 +100,20 @@ class Karma(db.Model):
     try:
       db.session.commit()
     except Exception as e:
-      print('error updating karma rank')
+      print(f'error updating karma rank {e}')
       db.session.rollback()
 
   @classmethod
   def getScore(cls, karmaID):
+    """
+    Retrieve the Karma score by Karma ID.
+
+    Args:
+        karmaID (int): The ID of the Karma record.
+
+    Returns:
+        float: The Karma score.
+    """
     # Retrieve the karma score by karma id
     karma = cls.query.filter_by(karmaID=karmaID).first()
     if karma:

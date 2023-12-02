@@ -35,8 +35,16 @@ class Review(db.Model):
 
   subscribers = [] #field for subscribers
 
-  # initialize the review. when it is created the date is automatically gotten and votes are at 0
   def __init__(self, reviewer, student, isPositive, comment):
+    """
+    Initialize a new Review object.
+
+    Args:
+        reviewer (Staff): The staff member who created the review.
+        student (Student): The student who the review is about.
+        isPositive (bool): Indicates whether the review is positive or not.
+        comment (str): The comment or description provided in the review.
+    """
     self.reviewerID = reviewer.ID
     self.reviewer = reviewer
     self.studentID = student.ID
@@ -47,12 +55,26 @@ class Review(db.Model):
     self.created = datetime.now()
 
   def get_id(self):
+    """
+    Get the ID of the Review.
+
+    Returns:
+        int: The ID of the Review.
+    """
     return self.ID
 
-
-#allows the comment and whether the review is positive to be edited if the staff member is the creator of the review, returns none if not
-
   def editReview(self, staff, isPositive, comment):
+    """
+    Edit the Review details.
+
+    Args:
+        staff (Staff): The staff member attempting to edit the review.
+        isPositive (bool): The updated positivity status of the review.
+        comment (str): The updated comment for the review.
+
+    Returns:
+        bool: True if the review is successfully edited, None otherwise.
+    """
     if self.reviewer == staff:
       self.isPositive = isPositive
       self.comment = comment
@@ -61,17 +83,32 @@ class Review(db.Model):
       return True
     return None
 
-  #deletes the review when called if the staff memeber is the creator of the review, return none if not
-
   def deleteReview(self, staff):
+    """
+    Delete the review if the staff member is the reviewer.
+
+    Args:
+        staff (Staff): The staff member attempting to delete the review.
+
+    Returns:
+        bool: True if the review is successfully deleted, None otherwise.
+    """
     if self.reviewer == staff:
       db.session.delete(self)
       db.session.commit()
       return True
     return None
 
-  #adds 1 to the upvotes for the review when called
   def upvoteReview(self, staff):
+    """
+    Delete the review if the staff member is the reviewer.
+
+    Args:
+        staff (Staff): The staff member attempting to delete the review.
+
+    Returns:
+        bool: True if the review is successfully deleted, None otherwise.
+    """
     if staff in self.staffUpvoters:
       return self.upvotes
     
@@ -89,9 +126,16 @@ class Review(db.Model):
     
     return self.upvotes
 
-
-  #adds 1 to the downvotes for the review when called
   def downvoteReview(self, staff):
+    """
+    Downvote the review by a staff member.
+
+    Args:
+        staff (Staff): The staff member downvoting the review.
+
+    Returns:
+        int: The updated number of downvotes.
+    """
     if staff in self.staffDownvoters:
       return self.downvotes
 
@@ -105,11 +149,14 @@ class Review(db.Model):
     db.session.add(self)
     db.session.commit()
 
-    self._update_karma()
+    self.updateKarma()
 
     return self.downvotes
   
   def updateKarma(self):
+    """
+    Update the karma for the associated student.
+    """
     student = Student.query.get(self.studentID)
     
     if student.karmaID is None:
@@ -121,10 +168,16 @@ class Review(db.Model):
       student_karma = Karma.query.get(student.karmaID)
       student_karma.calculateScore(student)
       student_karma.updateRank()
-      db.session.commit()
+      try:
+        db.session.commit()
+      except Exception as e:
+        print (f'error updating karma {e}')
+        db.session.rollback()
   
-  #return json representation of the review
   def to_json(self):
+    """
+    Convert the review instance to a JSON-formatted dictionary.
+    """
     return {
         "reviewID": self.ID,
         "reviewer": self.reviewer.firstname + " " + self.reviewer.lastname,
