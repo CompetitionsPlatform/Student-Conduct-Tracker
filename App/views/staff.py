@@ -15,6 +15,7 @@ from App.controllers.staff import (
 
 staff_views = Blueprint('staff_views', __name__, template_folder='../templates')
 
+#DONE
 @staff_views.route('/staff/<string:staff_id>', methods=['GET'])
 def get_staff_action(staff_id):
     staff = get_staff(str(staff_id))
@@ -22,7 +23,8 @@ def get_staff_action(staff_id):
         return jsonify(staff.to_json())
     return 'Staff not found', 404
 
-@staff_views.route('/student/<string:student_id>/reviews', methods=['POST'])
+
+@staff_views.route('/students/<string:student_id>/reviews', methods=['POST'])
 @jwt_required()
 def create_review_action(student_id):
     if not jwt_current_user or not isinstance(jwt_current_user, Staff):
@@ -35,7 +37,7 @@ def create_review_action(student_id):
 
     data = request.json
     if not data['comment']:
-        return "Invalid request data", 400
+        return jsonify(error="Invalid request data"), 400
     
     if data['isPositive'] not in (True, False):
         return jsonify({"message": f"invalid Positivity ({data['isPositive']}). Positive: true or false"}), 400
@@ -46,7 +48,7 @@ def create_review_action(student_id):
     review = create_review(jwt_current_user.ID, student_id, data['isPositive'], data['comment'])
     
     if review:
-        return jsonify(review.to_json()), 201
+        return jsonify(review.to_json()), 200
     return 'Failed to create review', 400
 
 @staff_views.route('/students/search/<string:search_term>', methods=['GET'])
