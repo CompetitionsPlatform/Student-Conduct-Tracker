@@ -2,6 +2,7 @@ from functools import wraps
 from flask_login import current_user, LoginManager, login_user
 from App.database import db
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+from flask import jsonify
 
 from App.models import Staff, Student, Admin, User
 
@@ -112,7 +113,7 @@ def staff_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not current_user.is_authenticated or not isinstance(current_user, Staff):
-            return "Unauthorized", 401
+            return jsonify(error='Unauthorized'), 401
         return func(*args, **kwargs)
     return wrapper
 
