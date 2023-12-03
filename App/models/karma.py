@@ -8,6 +8,8 @@ class Karma(db.Model):
   rank = db.Column(db.Integer, nullable=False, default=-99)
   review_id = db.Column(db.Integer, db.ForeignKey('review.ID'), nullable=True, unique=True)
 
+  review = db.relationship('Review', backref='karma', lazy=True)
+
   def __init__(self, score=0.0, rank=-99):
     """
     Initialize a new Karma object with the given score and rank.
