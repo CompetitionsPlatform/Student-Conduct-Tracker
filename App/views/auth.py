@@ -26,8 +26,8 @@ def login_action():
     if user:
         session['logged_in'] = True
         token = jwt_authenticate(data['ID'], data['password'])
-        return 'user logged in!'
-    return 'bad username or password given', 401
+        return jsonify(message='user logged in'), 200
+    return jsonify(error='bad username or password given'), 401
 
 @auth_views.route('/logout', methods=['GET'])
 def logout_action():
