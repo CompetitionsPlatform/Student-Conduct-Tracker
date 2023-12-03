@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, render_template, request, send_from_directory
 from flask_jwt_extended import current_user as jwt_current_user
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_login import current_user
 
 from App.controllers import *
@@ -10,9 +10,14 @@ user_views = Blueprint("user_views", __name__, template_folder='../templates')
 
 # Route to get page of all users 
 @user_views.route('/users', methods=['GET'])
+@admin_required
 def get_user_page():
-    users = get_all_users()
-    return render_template('users.html', users=users)
+  current_user_id = get_jwt_identity()
+
+  # Assuming get_all_users_json is a function that requires the user ID
+  users = get_all_users(current_user_id)
+
+  return (jsonify(users), 200)
 
 # Route to get all users
 @user_views.route('/api/users', methods=['GET'])
@@ -53,7 +58,6 @@ def create_student_action():
     else:
       return jsonify({"error" : "Unauthorized: You must be an admin to create students"}), 401
 
-
 # Route to create a new staff member
 @user_views.route("/user/create_staff", methods=["POST"])
 @jwt_required()
@@ -78,7 +82,6 @@ def create_staff_action():
   else:
     return jsonify({"error" : "Unauthorized: You must be an admin to create staff"}), 401
 
-
 # Route to get a student by ID
 @user_views.route("/student/<string:id>", methods=["GET"])
 def get_student_action(id):
@@ -87,7 +90,6 @@ def get_student_action(id):
         return jsonify(student.to_json()), 200
     else:
         return "Student not found", 404
-
 
 # Route to get all students
 @user_views.route("/students", methods=["GET"])
@@ -98,7 +100,6 @@ def get_all_students_action():
     else:
         return "No students found", 404
 
-
 # Route to get all staff members
 @user_views.route("/staff", methods=["GET"])
 def get_all_staff_action():
@@ -107,7 +108,6 @@ def get_all_staff_action():
         return jsonify([s.to_json() for s in staff]), 200
     else:
         return "No staff members found", 404
-
 
 # Route to update a student's information
 @user_views.route("/student/<string:id>/update", methods=["PUT"])
@@ -139,7 +139,6 @@ def update_student_action(id):
       return jsonify(student.to_json(), "Student information updated successfully"), 200
     else:
       return jsonify({"error": "Error updating student"}), 400 
-
 
 @user_views.route('/identify', methods=['GET'])
 @jwt_required()

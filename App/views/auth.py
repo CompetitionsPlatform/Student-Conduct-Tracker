@@ -19,7 +19,6 @@ auth_views = Blueprint('auth_views', __name__, template_folder='../templates')
 def identify_page():
     return jsonify({'message': f"username: {current_user.username}, id : {current_user.id}"})
 
-
 @auth_views.route('/login', methods=['POST'])
 def login_action():
     data = request.json
@@ -30,13 +29,11 @@ def login_action():
         return 'user logged in!'
     return 'bad username or password given', 401
 
-
 @auth_views.route('/logout', methods=['GET'])
 def logout_action():
     logout_user()
     return redirect('/'), jsonify('logged out!')
    
-
 @auth_views.route('/api/login', methods=['POST'])
 def user_login_api():
 	data = request.json
@@ -52,7 +49,6 @@ def admin_login_api():
   if not token:
     return jsonify(message='bad username or password given'), 401
   return jsonify(access_token=token)
-
 
 @auth_views.route('/api/identify', methods=['GET'])
 @jwt_required()
