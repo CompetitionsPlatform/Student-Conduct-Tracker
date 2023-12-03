@@ -19,14 +19,16 @@ from App.controllers.review import (
 # Create a Blueprint for Review views
 review_views = Blueprint("review_views", __name__, template_folder='../templates')
 
-# Route to list all reviews (you can customize this route as needed)
+# DONE Route to list all reviews (you can customize this route as needed)
 @review_views.route('/reviews', methods=['GET'])
+@jwt_required()
 def list_reviews():
     reviews = get_reviews()
     return jsonify([review.to_json() for review in reviews]), 200
 
 # Route to view a specific review and vote on it
-@review_views.route('/review/<int:review_id>', methods=['GET',])
+@review_views.route('/reviews/<int:review_id>', methods=['GET'])
+@jwt_required()
 def view_review(review_id):
     review = get_review(review_id)
     if review:
@@ -34,52 +36,40 @@ def view_review(review_id):
     else: 
         return 'Review does not exist', 404
 
-#Route to upvote review 
-@review_views.route('/review/<int:review_id>/upvote', methods=['POST'])
+# Route to vote on a particular review
+@review_views.route('/reviews/<int:review_id>', methods=['POST'])
 @jwt_required()
-def upvote (review_id):
+def vote(review_id):
     if not jwt_current_user or not isinstance(jwt_current_user, Staff):
-      return "You are not authorized to upvote this review", 401
-      
-    review= get_review(review_id) 
+        return jsonify({"error": "You are not authorized to vote on this review"}), 401
+    
+    review = get_review(review_id)
+    
     if review:
+        data = request.json
         staff = get_staff(jwt_current_user.ID)
+        
         if staff:
-            current = review.upvotes
-            new_votes= upvoteReview(review_id, staff)
-            if new_votes == current: 
-               return jsonify(review.to_json(), 'Review Already Upvoted'), 201 
+            if 'upvote' in data and isinstance(data['upvote'], bool):
+                if data['upvote']:
+                    current_votes = review.upvotes
+                    new_votes = upvoteReview(review_id, staff)
+                    message = 'Review Upvoted Successfully' if new_votes > current_votes else 'Review Already Upvoted'
+                else:
+                    current_votes = review.downvotes
+                    new_votes = downvoteReview(review_id, staff)
+                    message = 'Review Downvoted Successfully' if new_votes > current_votes else 'Review Already Downvoted'
+                
+                return jsonify(review.to_json(), message), 200
             else:
-                return jsonify(review.to_json(), 'Review Upvoted'), 200
-        else: 
-            return jsonify('Staff does not exist'), 404     
-    else: 
-        return'Review does not exist', 404
-
-#Route to downvote review 
-@review_views.route('/review/<int:review_id>/downvote', methods=['POST'])
-@jwt_required()
-def downvote (review_id):
-    if not jwt_current_user or not isinstance(jwt_current_user, Staff):
-      return "You are not authorized to downvote this review", 401
-  
-    review= get_review(review_id) 
-    if review:
-        staff = get_staff(jwt_current_user.ID)
-        if staff:
-            current = review.downvotes
-            new_votes= downvoteReview(review_id, staff)
-            if new_votes == current: 
-               return jsonify(review.to_json(), 'Review Already Downvoted'), 201 
-            else:
-                return jsonify(review.to_json(), 'Review Downvoted Successfully'), 200 
-        else: 
-            return jsonify(get_review(review_id).to_json(), 'Staff does not exist'), 404
-    else: 
-        return'Review does not exist', 404
+                return jsonify({"error": "Invalid request data. 'upvote' field must be a boolean"}), 400
+        else:
+            return jsonify({"error": "Staff does not exist"}), 404
+    else:
+        return jsonify({"error": "Review does not exist"}), 404
 
 # Route to get reviews by student ID
-@review_views.route("/student/<string:student_id>/reviews", methods=["GET"])
+@review_views.route("/students/<string:student_id>/reviews", methods=["GET"])
 def get_reviews_of_student(student_id):
     if search_student(student_id):
         reviews = get_reviews_for_student(student_id)
@@ -101,7 +91,7 @@ def get_reviews_from_staff(staff_id):
     return "Staff does not exist", 404
 
 # Route to edit a review
-@review_views.route("/review/edit/<int:review_id>", methods=["PUT"])
+@review_views.route("/reviews/<int:review_id>", methods=["PUT"])
 @jwt_required()
 def review_edit(review_id):
     review = get_review(review_id)
@@ -128,7 +118,7 @@ def review_edit(review_id):
       return "Error updating review", 400
 
 # Route to delete a review
-@review_views.route("/review/delete/<int:review_id>", methods=["DELETE"])
+@review_views.route("/reviews/<int:review_id>", methods=["DELETE"])
 @jwt_required()
 def review_delete(review_id):
     review = get_review(review_id)
