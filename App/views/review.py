@@ -127,8 +127,6 @@ def review_edit(review_id):
     else:
       return "Error updating review", 400
 
-
-
 # Route to delete a review
 @review_views.route("/review/delete/<int:review_id>", methods=["DELETE"])
 @jwt_required()
