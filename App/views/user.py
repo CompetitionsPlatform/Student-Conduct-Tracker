@@ -8,9 +8,9 @@ from App.controllers import *
 # Create a Blueprint for user views
 user_views = Blueprint("user_views", __name__, template_folder='../templates')
 
-# Route to get page of all users 
+# DONE Route to get page of all users 
 @user_views.route('/users', methods=['GET'])
-@admin_required
+@staff_required
 def get_user_page():
   current_user_id = get_jwt_identity()
 
@@ -19,8 +19,9 @@ def get_user_page():
 
   return (jsonify(users), 200)
 
-# Route to get all users
+# DONE Route to get all users
 @user_views.route('/api/users', methods=['GET'])
+@jwt_required()
 def get_users_action():
     users = get_all_users_json()
     return jsonify(users)
@@ -30,7 +31,7 @@ def static_user_page():
   return send_from_directory('static', 'static-user.html')
 
 # Route to create a new student
-@user_views.route("/user/create_student", methods=["POST"])
+@user_views.route("/users/create_student", methods=["POST"])
 @jwt_required()
 def create_student_action():
     data = request.json #get data from post request
@@ -59,7 +60,7 @@ def create_student_action():
       return jsonify({"error" : "Unauthorized: You must be an admin to create students"}), 401
 
 # Route to create a new staff member
-@user_views.route("/user/create_staff", methods=["POST"])
+@user_views.route("/users/create_staff", methods=["POST"])
 @jwt_required()
 def create_staff_action():
   #get data from the post request body 
@@ -82,8 +83,9 @@ def create_staff_action():
   else:
     return jsonify({"error" : "Unauthorized: You must be an admin to create staff"}), 401
 
-# Route to get a student by ID
-@user_views.route("/student/<string:id>", methods=["GET"])
+# DONE Route to get a student by ID
+@user_views.route("/students/<string:id>", methods=["GET"])
+@jwt_required()
 def get_student_action(id):
     student = get_student(str(id))
     if student:
@@ -91,8 +93,9 @@ def get_student_action(id):
     else:
         return "Student not found", 404
 
-# Route to get all students
+# DONE Route to get all students
 @user_views.route("/students", methods=["GET"])
+@jwt_required()
 def get_all_students_action():
     students = get_all_students()
     if students:
@@ -100,8 +103,9 @@ def get_all_students_action():
     else:
         return "No students found", 404
 
-# Route to get all staff members
+# DONE Route to get all staff members
 @user_views.route("/staff", methods=["GET"])
+@jwt_required()
 def get_all_staff_action():
     staff = get_all_staff()
     if staff:
@@ -110,7 +114,7 @@ def get_all_staff_action():
         return "No staff members found", 404
 
 # Route to update a student's information
-@user_views.route("/student/<string:id>/update", methods=["PUT"])
+@user_views.route("/students/<string:id>", methods=["PUT"])
 @jwt_required()
 def update_student_action(id):
     if not jwt_current_user or not isinstance(jwt_current_user, Admin):
@@ -139,8 +143,3 @@ def update_student_action(id):
       return jsonify(student.to_json(), "Student information updated successfully"), 200
     else:
       return jsonify({"error": "Error updating student"}), 400 
-
-@user_views.route('/identify', methods=['GET'])
-@jwt_required()
-def identify_user_action():
-    return jsonify({'message': f"username: {current_user.fistname}, id : {current_user.ID}, type: {current_user.user_type}"})
