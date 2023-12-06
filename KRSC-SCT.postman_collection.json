@@ -1,0 +1,3214 @@
+{
+	"info": {
+		"_postman_id": "49b19c7f-80e0-4835-8f04-8e49913be834",
+		"name": "KRSC-SCT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25679363"
+	},
+	"item": [
+		{
+			"name": "Index",
+			"item": [
+				{
+					"name": "Index Page",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}",
+							"host": [
+								"{{host}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Init",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//check status code response is 201",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"//check if response message is \"database initialized\"",
+									"pm.test(\"Response message is 'database initialized'\", function () {",
+									"    pm.response.to.have.jsonBody({ message: \"database initialized\" });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/init",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"init"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Karma",
+			"item": [
+				{
+					"name": "Update Student Ranking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/rankings",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rankings"
+							]
+						},
+						"description": "karma_views: Updates the ranking of students based on their karma score"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Staff",
+			"item": [
+				{
+					"name": "Staff Login Fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//check status code response",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"//check response message",
+									"pm.test(\"Response message is 'database initialized'\", function () {",
+									"    pm.response.to.have.jsonBody({ error: \"bad username or password given\" });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ID\": \"64\",\n    \"password\": \"staffpass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Staff Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//check status code response",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//check response message",
+									"pm.test(\"Response message is 'database initialized'\", function () {",
+									"    pm.response.to.have.jsonBody({ message: \"user logged in\" });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ID\": \"99\",\n    \"password\": \"staffpass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Staff API Login Fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//check status code response",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"//check response message",
+									"pm.test(\"Response message is 'database initialized'\", function () {",
+									"    pm.response.to.have.jsonBody({ error: \"bad username or password given\" });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ID\": \"80\",\n    \"password\": \"staffpass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Staff 1 API Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Returned Access Token\", function(){",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(pm.response.json()).to.have.property(\"access_token\");",
+									"    pm.environment.set('staff1_token', jsonData['access_token']) ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ID\": \"99\",\n    \"password\": \"staffpass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Staff 2 API Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Returned Access Token\", function(){",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(pm.response.json()).to.have.property(\"access_token\");",
+									"    pm.environment.set('staff2_token', jsonData['access_token']) ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ID\": \"69\",\n    \"password\": \"nicepass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Staff By ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Get the URL path and split it by '/'",
+									"const urlPath = pm.request.url.getPath();",
+									"const pathSegments = urlPath.split('/');",
+									"",
+									"// Extract the last segment (staff_id)",
+									"const id = pathSegments[pathSegments.length - 1];",
+									"",
+									"// Use the id value in the test so the parameter value can change, and the test will still work",
+									"pm.test(\"Retrieved record with staffID \" + id, function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"staffID\", id);",
+									"});",
+									"",
+									"pm.test(\"Response contains all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    // Define the expected fields (excluding 'password')",
+									"    const expectedFields = [\"firstname\", \"lastname\", \"staffID\", \"email\", \"teachingExperience\"];",
+									"",
+									"    // Compare the response data with the expected fields",
+									"    for (const field of expectedFields) {",
+									"        pm.expect(responseJson).to.have.property(field);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/staff/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"staff",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "69"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Staff 1 Create Review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Get request data to check all fields entered\r",
+									"let jsonData = JSON.parse(request.data);\r",
+									"\r",
+									"pm.test(\"Review successfully logged with the entered information\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson).to.be.an('object');\r",
+									"\r",
+									"    pm.expect(responseJson.isPositive).to.equal(jsonData.isPositive);\r",
+									"    pm.expect(responseJson.comment).to.equal(jsonData.comment);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"ReviewID\", function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"reviewID\");\r",
+									"    pm.environment.set('staff1_reviewID', jsonData['reviewID']) \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isPositive\": true,\r\n    \"comment\": \"Mr. Dune is a very outstanding student.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/students/:student_id/reviews",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"students",
+								":student_id",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "student_id",
+									"value": "813"
+								}
+							]
+						},
+						"description": "create_staff_review: Staff creates a review for a student"
+					},
+					"response": []
+				},
+				{
+					"name": "Staff 2 Create Review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 201\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Get request data to check all fields entered\r",
+									"let jsonData = JSON.parse(request.data);\r",
+									"\r",
+									"pm.test(\"Review successfully logged with the entered information\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson).to.be.an('object');\r",
+									"\r",
+									"    pm.expect(responseJson.isPositive).to.equal(jsonData.isPositive);\r",
+									"    pm.expect(responseJson.comment).to.equal(jsonData.comment);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"ReviewID\", function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"reviewID\");\r",
+									"    pm.environment.set('staff2_reviewID', jsonData['reviewID']);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff2_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isPositive\": true,\r\n    \"comment\": \"A hardworking student.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/students/:student_id/reviews",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"students",
+								":student_id",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "student_id",
+									"value": "813"
+								}
+							]
+						},
+						"description": "create_staff_review: Staff creates a review for a student"
+					},
+					"response": [
+						{
+							"name": "(Staff 2) Create Review",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"isPositive\": true,\r\n    \"comment\": \"A hardworking student.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/student/:student_id/reviews",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"student",
+										":student_id",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "student_id",
+											"value": "813"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:40:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a27f3dfa5412a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"comment\": \"A hardworking student.\",\n    \"created\": \"22-10-2023 14:40\",\n    \"downvotes\": 0,\n    \"isPositive\": true,\n    \"reviewID\": 2,\n    \"reviewer\": \"Dean Lee\",\n    \"studentID\": \"813\",\n    \"studentName\": \"Joe Dune\",\n    \"upvotes\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Staff Search Students",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Get the URL path and split it by '/'\r",
+									"const urlPath = pm.request.url.getPath();\r",
+									"const pathSegments = urlPath.split('/');\r",
+									"\r",
+									"// Extract the last segment (id)\r",
+									"const search_term = pathSegments[pathSegments.length - 1];\r",
+									"\r",
+									"const schema = {\r",
+									"  \"type\": \"array\",\r",
+									"  \"items\": {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"            \"studentID\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"firstname\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"lastname\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"contact\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"studentType\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"yearOfStudy\": { \r",
+									"                \"type\": \"integer\" \r",
+									"            }\r",
+									"    },\r",
+									"    \"required\": [\"studentID\", \"firstname\", \"lastname\", \"contact\", \"studentType\", \"yearOfStudy\"]\r",
+									"  }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Search Schema is valid\", function(){\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Search response includes \" + search_term, function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    // Validate the response JSON against the schema\r",
+									"    pm.expect(responseJson).to.be.jsonSchema(schema);\r",
+									"\r",
+									"    // Check that at least one of the 3 possible fields to search matches the search term\r",
+									"    const search_term_lower = search_term.toLowerCase(); //don't mind the capitalization\r",
+									"\r",
+									"    const searchMatches = responseJson.some(student => (\r",
+									"        student.studentID === search_term ||\r",
+									"        student.firstname.toLowerCase().includes(search_term_lower) ||\r",
+									"        student.lastname.toLowerCase().includes(search_term_lower)\r",
+									"    ));\r",
+									"\r",
+									"    pm.expect(searchMatches).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/students/search/:search_term",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"students",
+								"search",
+								":search_term"
+							],
+							"variable": [
+								{
+									"key": "search_term",
+									"value": "Joe"
+								}
+							]
+						},
+						"description": "Searches for a student with the given search term. The search term can be the student's student ID or their firstname/lastname."
+					},
+					"response": [
+						{
+							"name": "(Staff) Search Students",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/students/search/:search_term",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"students",
+										"search",
+										":search_term"
+									],
+									"variable": [
+										{
+											"key": "search_term",
+											"value": "Joe"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:35:40 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a277d70f0312a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"contact\": \"jooey@gmail.com\",\n        \"firstname\": \"Joe\",\n        \"karmaRank\": null,\n        \"karmaScore\": null,\n        \"lastname\": \"Dune\",\n        \"reviews\": [\n            {\n                \"comment\": \"Mr. Dune is a very outstanding student.\",\n                \"created\": \"22-10-2023 14:34\",\n                \"downvotes\": 0,\n                \"isPositive\": true,\n                \"reviewID\": 1,\n                \"reviewer\": \"Bob Charles\",\n                \"studentID\": \"813\",\n                \"studentName\": \"Joe Dune\",\n                \"upvotes\": 0\n            }\n        ],\n        \"studentID\": \"813\",\n        \"studentType\": \"Part-Time\",\n        \"yearOfStudy\": 2\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Staff Get Student Rankings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//requires create review and either upvote or downvote requests to get a result\r",
+									"\r",
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const studentSchema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"properties\": {\r",
+									"        \"firstname\": {\r",
+									"            \"type\": \"string\"\r",
+									"        },\r",
+									"        \"karmaRank\": {\r",
+									"            \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"karmaScore\": {\r",
+									"            \"type\": \"number\"\r",
+									"        },\r",
+									"        \"lastname\": {\r",
+									"            \"type\": \"string\"\r",
+									"        },\r",
+									"        \"studentID\": {\r",
+									"            \"type\": \"string\"\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"firstname\", \"karmaRank\", \"karmaScore\", \"lastname\", \"studentID\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Response Schema is valid\", function () {\r",
+									"    pm.response.to.have.jsonSchema(studentSchema);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/rankings",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rankings"
+							]
+						},
+						"description": "get_student_rankings: Lists the karma rankings of all students who have a karma record"
+					},
+					"response": [
+						{
+							"name": "Get Student Rankings",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/rankings",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"rankings"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:44:46 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a2852c089912a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"firstname\": \"Joe\",\n        \"karmaRank\": 1,\n        \"karmaScore\": 1,\n        \"lastname\": \"Dune\",\n        \"studentID\": \"813\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//all users contain firstname and lastname",
+									"const schema = {",
+									"  \"type\": \"array\",",
+									"  \"items\": {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"      \"firstname\": { ",
+									"          \"type\": \"string\" ",
+									"        },",
+									"      \"lastname\": { ",
+									"          \"type\": \"string\" ",
+									"        }",
+									"      ",
+									"    },",
+									"    \"required\": [\"firstname\", \"lastname\"]",
+									"  }",
+									"}",
+									"pm.test(\"Response Schema is valid for all users\", function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Static User Page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/static/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"static",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Students",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const schema = {",
+									"  \"type\": \"array\",",
+									"  \"items\": {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"      \"studentID\": { ",
+									"          \"type\": \"string\" ",
+									"          },",
+									"      \"firstname\": { ",
+									"          \"type\": \"string\" ",
+									"          },",
+									"      \"lastname\": { ",
+									"          \"type\": \"string\" ",
+									"          },",
+									"      \"contact\": { ",
+									"          \"type\": \"string\" ",
+									"          },",
+									"      \"studentType\": { ",
+									"          \"type\": \"string\" ",
+									"          },",
+									"      \"yearOfStudy\": { ",
+									"          \"type\": \"integer\" ",
+									"          }",
+									"    },",
+									"    \"required\": [\"studentID\", \"firstname\", \"lastname\", \"contact\", \"studentType\", \"yearOfStudy\"]",
+									"  }",
+									"}",
+									"pm.test(\"Response Schema is valid\", function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/students",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Student By ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Get the URL path and split it by '/'",
+									"const urlPath = pm.request.url.getPath();",
+									"const pathSegments = urlPath.split('/');",
+									"",
+									"// Extract the last segment (id)",
+									"const id = pathSegments[pathSegments.length - 1];",
+									"",
+									"// Use the id value in test so parameter value can change and test will still work",
+									"pm.test(\"Retrieved record with studentID \" + id, function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"studentID\", id);",
+									"});",
+									"",
+									"pm.test(\"Response contains all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    // Define the expected fields",
+									"    const expectedFields = [\"firstname\", \"lastname\", \"studentID\",\"contact\", \"studentType\", \"yearOfStudy\"];",
+									"",
+									"    // Compare the response data with the expected fields",
+									"    for (const field of expectedFields) {",
+									"        pm.expect(responseJson).to.have.property(field);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/students/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"students",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "83"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Staff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const schema = {",
+									"  \"type\": \"array\",",
+									"  \"items\": {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"      \"firstname\": {",
+									"        \"type\": \"string\"",
+									"      },",
+									"      \"lastname\": {",
+									"        \"type\": \"string\"",
+									"      },",
+									"      \"staffID\": {",
+									"        \"type\": \"string\"",
+									"      },",
+									"      \"email\": {",
+									"        \"type\": \"string\"",
+									"      },",
+									"      \"teachingExperience\": {",
+									"        \"type\": \"integer\"",
+									"      }",
+									"    },",
+									"    \"required\": [\"firstname\", \"lastname\", \"staffID\", \"email\", \"teachingExperience\"]",
+									"  }",
+									"}",
+									"pm.test(\"Response Schema is valid\", function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/staff",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"staff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Returned Access Token\", function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"access_token\");\r",
+									"    pm.environment.set('admin_token', jsonData['access_token']) \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ID\": \"A1\",\r\n    \"password\": \"bobpass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/admin/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Admin Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ID\": \"1\",\r\n    \"password\": \"bobpass\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:17:06 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a25ca54e6612a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5Nzk4NDIyNiwianRpIjoiMjgzNTUzMzktMTllOC00NzNmLTk4MWYtNWY1OWVhOTRlOTVkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6bnVsbCwibmJmIjoxNjk3OTg0MjI2LCJleHAiOjE2OTg1ODkwMjZ9.JMFVaa5-vFRX76RND8dH88sCO4Vznle5f_uYD0iNwCU\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Admin Create Staff 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 201\", function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"//get request data to check all fields entered\r",
+									"let jsonData = JSON.parse(request.data); \r",
+									"\r",
+									"// Test for a successful staff creation\r",
+									"pm.test(\"Message contains 'Staff created with ID \" + jsonData.staffID + \"'\", function () {\r",
+									"   const responseBody = pm.response.text();\r",
+									"   pm.expect(responseBody).to.include(\"Staff created with ID \" + jsonData.staffID);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Test for a successful staff creation\r",
+									"pm.test(\"All data have been entered for the staff\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"    pm.expect(responseJson).to.have.lengthOf(2);\r",
+									"\r",
+									"    // Check the second object in the array (staff data)\r",
+									"    const staffObject = responseJson[1];\r",
+									"    pm.expect(staffObject).to.be.an('object');\r",
+									"    pm.expect(staffObject.firstname).to.equal(jsonData.firstname);\r",
+									"    pm.expect(staffObject.lastname).to.equal(jsonData.lastname);\r",
+									"    pm.expect(staffObject.email).to.equal(jsonData.email);\r",
+									"    pm.expect(staffObject.teachingExperience).to.equal(parseInt(jsonData.teachingExperience));\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Bob\",\r\n    \"lastname\" : \"Charles\",\r\n    \"password\" : \"bobpass\",\r\n    \"staffID\" : \"{{ $randomInt 600 700}}\",\r\n    \"email\" : \"bob.charles@staff.com\",\r\n    \"teachingExperience\" : \"10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/create_staff",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"create_staff"
+							]
+						},
+						"description": "Creates a staff record"
+					},
+					"response": [
+						{
+							"name": "(Admin) Create Staff 1",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstname\": \"Bob\",\r\n    \"lastname\" : \"Charles\",\r\n    \"password\" : \"bobpass\",\r\n    \"staffID\" : \"342\",\r\n    \"email\" : \"bob.charles@staff.com\",\r\n    \"teachingExperience\" : \"10\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/create_staff",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"create_staff"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:29:28 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a26ec26ae312a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"message\": \"Staff created with ID 342\"\n    },\n    {\n        \"email\": \"bob.charles@staff.com\",\n        \"firstname\": \"Bob\",\n        \"lastname\": \"Charles\",\n        \"staffID\": \"342\",\n        \"teachingExperience\": 10\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Admin Create Staff 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 201\", function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"//get request data to check all fields entered\r",
+									"let jsonData = JSON.parse(request.data); \r",
+									"\r",
+									"// Test for a successful staff creation\r",
+									"pm.test(\"Message contains 'Staff created with ID \" + jsonData.staffID + \"'\", function () {\r",
+									"   const responseBody = pm.response.text();\r",
+									"   pm.expect(responseBody).to.include(\"Staff created with ID \" + jsonData.staffID);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Test for a successful staff creation\r",
+									"pm.test(\"All data have been entered for the staff\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"    pm.expect(responseJson).to.have.lengthOf(2);\r",
+									"\r",
+									"    // Check the second object in the array (staff data)\r",
+									"    const staffObject = responseJson[1];\r",
+									"    pm.expect(staffObject).to.be.an('object');\r",
+									"    pm.expect(staffObject.firstname).to.equal(jsonData.firstname);\r",
+									"    pm.expect(staffObject.lastname).to.equal(jsonData.lastname);\r",
+									"    pm.expect(staffObject.email).to.equal(jsonData.email);\r",
+									"    pm.expect(staffObject.teachingExperience).to.equal(parseInt(jsonData.teachingExperience));\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Dean\",\r\n    \"lastname\" : \"Lee\",\r\n    \"password\" : \"leepass\",\r\n    \"staffID\" : \"{{ $randomInt 600 700 }}\",\r\n    \"email\" : \"dean.lee@staff.com\",\r\n    \"teachingExperience\" : \"10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/create_staff",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"create_staff"
+							]
+						},
+						"description": "Creates a staff record"
+					},
+					"response": [
+						{
+							"name": "(Admin) Create Staff 1 Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstname\": \"Dean\",\r\n    \"lastname\" : \"Lee\",\r\n    \"password\" : \"leepass\",\r\n    \"staffID\" : \"345\",\r\n    \"email\" : \"dean.lee@staff.com\",\r\n    \"teachingExperience\" : \"10\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/create_staff",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"create_staff"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:30:44 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a270a09d3f12a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"message\": \"Staff created with ID 345\"\n    },\n    {\n        \"email\": \"dean.lee@staff.com\",\n        \"firstname\": \"Dean\",\n        \"lastname\": \"Lee\",\n        \"staffID\": \"345\",\n        \"teachingExperience\": 10\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Admin Create Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 201\", function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Get request data to check all fields entered\r",
+									"let jsonData = JSON.parse(request.data);\r",
+									"\r",
+									"// Test for a successful student creation\r",
+									"pm.test(\"Message contains 'Student created with ID \" + jsonData.studentID + \"'\", function () {\r",
+									"    const responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include(\"Student created with ID \" + jsonData.studentID);\r",
+									"});\r",
+									"\r",
+									"// Test for a successful student creation\r",
+									"pm.test(\"All data have been entered for the student\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"    pm.expect(responseJson).to.have.lengthOf(2);\r",
+									"\r",
+									"    // Check the second object in the array (student data)\r",
+									"    const studentObject = responseJson[1];\r",
+									"    pm.expect(studentObject).to.be.an('object');\r",
+									"    pm.expect(studentObject.firstname).to.equal(jsonData.firstname);\r",
+									"    pm.expect(studentObject.lastname).to.equal(jsonData.lastname);\r",
+									"    pm.expect(studentObject.contact).to.equal(jsonData.contact);\r",
+									"    pm.expect(studentObject.studentType).to.equal(jsonData.studentType);\r",
+									"    pm.expect(parseInt(studentObject.yearOfStudy)).to.equal(parseInt(jsonData.yearOfStudy));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"studentID\": \"{{ $randomInt 600 9000 }}\",\r\n    \"firstname\": \"Joe\",\r\n    \"lastname\": \"Dune\",\r\n    \"password\": \"dupass\",\r\n    \"contact\": \"0000-653-4343\",\r\n    \"studentType\": \"Full-Time\",\r\n    \"yearOfStudy\": \"2\"\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/create_student",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"create_student"
+							]
+						},
+						"description": "create_student_action: Creates a student record"
+					},
+					"response": [
+						{
+							"name": "Create Student",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"studentID\": \"813\",\r\n    \"firstname\": \"Joe\", \r\n    \"lastname\": \"Dune\",\r\n    \"password\": \"dupass\",\r\n    \"contact\": \"0000-653-4343\",\r\n    \"studentType\": \"Full-Time\",\r\n    \"yearOfStudy\" : \"2\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/create_student",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"create_student"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:30:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a270e90a6612a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"message\": \"Student created with ID 813\"\n    },\n    {\n        \"contact\": \"0000-653-4343\",\n        \"firstname\": \"Joe\",\n        \"karmaRank\": null,\n        \"karmaScore\": null,\n        \"lastname\": \"Dune\",\n        \"reviews\": [],\n        \"studentID\": \"813\",\n        \"studentType\": \"Full-Time\",\n        \"yearOfStudy\": 2\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Admin Update Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Get request data to check all fields entered\r",
+									"let jsonData = JSON.parse(request.data);\r",
+									"\r",
+									"// Test for a successful student creation\r",
+									"pm.test(\"Message contains 'Student information updated successfully' \", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"    pm.expect(responseJson).to.have.lengthOf(2);\r",
+									"\r",
+									"    pm.expect(responseJson[1]).to.include(\"Student information updated successfully\");\r",
+									"});\r",
+									"\r",
+									"// Test for a successful student creation\r",
+									"pm.test(\"Updated student data matches input\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"    pm.expect(responseJson).to.have.lengthOf(2);\r",
+									"\r",
+									"    // Check the second object in the array (student data)\r",
+									"    const studentObject = responseJson[0];\r",
+									"    pm.expect(studentObject).to.be.an('object');\r",
+									"    pm.expect(studentObject.firstname).to.equal(jsonData.firstname);\r",
+									"    pm.expect(studentObject.lastname).to.equal(jsonData.lastname);\r",
+									"    pm.expect(studentObject.contact).to.equal(jsonData.contact);\r",
+									"    pm.expect(studentObject.studentType).to.equal(jsonData.studentType);\r",
+									"    pm.expect(parseInt(studentObject.yearOfStudy)).to.equal(parseInt(jsonData.yearOfStudy));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"studentID\": \"813\",\r\n    \"firstname\": \"Joe\", \r\n    \"lastname\": \"Dune\",\r\n    \"password\": \"dupass\",\r\n    \"contact\": \"0000-653-4343\",\r\n    \"studentType\": \"Part-Time\",\r\n    \"yearOfStudy\" : \"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/students/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"students",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "813",
+									"description": "3"
+								}
+							]
+						},
+						"description": "Updates the student record of the student with the given id"
+					},
+					"response": [
+						{
+							"name": "Update Student",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstname\": \"Joe\", \r\n    \"lastname\": \"Dune\",\r\n    \"password\": \"dupass\",\r\n    \"studentID\": \"813\",\r\n    \"contact\": \"jooey@gmail.com\",\r\n    \"studentType\": \"Part-time\",\r\n    \"yearOfStudy\" : \"2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/student/:id/update",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"student",
+										":id",
+										"update"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "813"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:33:02 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a273fd9cdd12a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"contact\": \"jooey@gmail.com\",\n        \"firstname\": \"Joe\",\n        \"karmaRank\": null,\n        \"karmaScore\": null,\n        \"lastname\": \"Dune\",\n        \"reviews\": [],\n        \"studentID\": \"813\",\n        \"studentType\": \"Part-Time\",\n        \"yearOfStudy\": 2\n    },\n    \"Student information updated successfully\"\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "List All Reviews",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const reviewSchema = {",
+									"    \"type\": \"array\",",
+									"    \"properties\": {",
+									"            \"comment\": { ",
+									"                \"type\": \"string\" ",
+									"            },",
+									"            \"created\": { ",
+									"                \"type\": \"string\" ",
+									"            },",
+									"            \"downvotes\": { ",
+									"                \"type\": \"integer\" ",
+									"            },",
+									"            \"isPositive\": { ",
+									"                \"type\": \"boolean\" ",
+									"            },",
+									"            \"reviewID\": { ",
+									"                \"type\": \"integer\" ",
+									"            },",
+									"            \"reviewer\": { ",
+									"                \"type\": \"string\" ",
+									"            },",
+									"            \"studentID\": { ",
+									"                \"type\": \"string\" ",
+									"            },",
+									"            \"studentName\": { ",
+									"                \"type\": \"string\" ",
+									"            },",
+									"            \"upvotes\": { ",
+									"                \"type\": \"integer\"",
+									"            }",
+									"    },",
+									"    \"required\": [\"comment\", \"created\", \"downvotes\", \"isPositive\", \"reviewID\", \"reviewer\", \"studentID\", \"studentName\", \"upvotes\"]",
+									"};",
+									"",
+									"pm.test(\"Response Schema is valid\", function() {",
+									"    pm.response.to.have.jsonSchema(reviewSchema);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/reviews",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Review By ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Get the URL path and split it by '/'",
+									"const urlPath = pm.request.url.getPath();",
+									"const pathSegments = urlPath.split('/');",
+									"",
+									"// Extract the last segment (id)",
+									"const id = pathSegments[pathSegments.length - 1];",
+									"",
+									"// Use the id value in test so parameter value can change, and the test will still work",
+									"pm.test(\"Retrieved record with reviewID \" + id, function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson).to.have.property(\"reviewID\", parseInt(id)); // Ensure it's converted to an integer",
+									"});",
+									"",
+									"pm.test(\"Response contains all expected fields\", function () {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    // Define the expected fields",
+									"    const expectedFields = [\"comment\", \"created\", \"downvotes\", \"isPositive\", \"reviewID\", \"reviewer\", \"studentID\", \"studentName\", \"upvotes\"];",
+									"",
+									"    // Compare the response data with the expected fields",
+									"    for (const field of expectedFields) {",
+									"        pm.expect(responseJson).to.have.property(field);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Length",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "<calculated when request is sent>",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/reviews/:review_id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"reviews",
+								":review_id"
+							],
+							"variable": [
+								{
+									"key": "review_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reviews by Staff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const reviewSchema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"properties\": {\r",
+									"            \"comment\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"created\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"downvotes\": { \r",
+									"                \"type\": \"integer\" \r",
+									"            },\r",
+									"            \"isPositive\": { \r",
+									"                \"type\": \"boolean\" \r",
+									"            },\r",
+									"            \"reviewID\": { \r",
+									"                \"type\": \"integer\" \r",
+									"            },\r",
+									"            \"reviewer\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"studentID\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"studentName\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"upvotes\": { \r",
+									"                \"type\": \"integer\"\r",
+									"            }\r",
+									"    },\r",
+									"    \"required\": [\"comment\", \"created\", \"downvotes\", \"isPositive\", \"reviewID\", \"reviewer\", \"studentID\", \"studentName\", \"upvotes\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Review response Schema is valid\", function() {\r",
+									"    pm.response.to.have.jsonSchema(reviewSchema);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/staff/:staff_id/reviews",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"staff",
+								":staff_id",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "staff_id",
+									"value": "69"
+								}
+							]
+						},
+						"description": "get_reviews_from_staff: Displays all reviews that have been written by the staff member with the provided staff ID"
+					},
+					"response": [
+						{
+							"name": "Get Reviews by Staff",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "student-conduct-tracker-api.onrender.com/staff/:staff_id/reviews",
+									"host": [
+										"student-conduct-tracker-api",
+										"onrender",
+										"com"
+									],
+									"path": [
+										"staff",
+										":staff_id",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "staff_id",
+											"value": "342"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:43:04 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a282ad6eb412a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"comment\": \"Mr. Dune is a very outstanding student.\",\n        \"created\": \"22-10-2023 14:34\",\n        \"downvotes\": 0,\n        \"isPositive\": true,\n        \"reviewID\": 1,\n        \"reviewer\": \"Bob Charles\",\n        \"studentID\": \"813\",\n        \"studentName\": \"Joe Dune\",\n        \"upvotes\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Reviews for Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Get the URL path and split it by '/'\r",
+									"const urlPath = pm.request.url.getPath();\r",
+									"const pathSegments = urlPath.split('/');\r",
+									"\r",
+									"// Extract the last segment (student_id)\r",
+									"const id = pathSegments[pathSegments.length - 2];\r",
+									"\r",
+									"// Use the id value in the test so the parameter value can change, and the test will still work\r",
+									"pm.test(\"Retrieved reviews for student with ID \" + id, function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    \r",
+									"    // Iterate through the reviews in the response\r",
+									"    responseJson.forEach(review => {\r",
+									"        pm.expect(review).to.have.property(\"studentID\", id);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"const reviewSchema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"properties\": {\r",
+									"            \"comment\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"created\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"downvotes\": { \r",
+									"                \"type\": \"integer\" \r",
+									"            },\r",
+									"            \"isPositive\": { \r",
+									"                \"type\": \"boolean\" \r",
+									"            },\r",
+									"            \"reviewID\": { \r",
+									"                \"type\": \"integer\" \r",
+									"            },\r",
+									"            \"reviewer\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"studentID\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"studentName\": { \r",
+									"                \"type\": \"string\" \r",
+									"            },\r",
+									"            \"upvotes\": { \r",
+									"                \"type\": \"integer\"\r",
+									"            }\r",
+									"    },\r",
+									"    \"required\": [\"comment\", \"created\", \"downvotes\", \"isPositive\", \"reviewID\", \"reviewer\", \"studentID\", \"studentName\", \"upvotes\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Response Schema is valid\", function() {\r",
+									"    pm.response.to.have.jsonSchema(reviewSchema);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/students/:student_id/reviews",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"students",
+								":student_id",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "student_id",
+									"value": "813"
+								}
+							]
+						},
+						"description": "get_reviews_for_student: Displays all reviews for a student with the provided student ID"
+					},
+					"response": [
+						{
+							"name": "Get Reviews for Student",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "student-conduct-tracker-api.onrender.com/student/:student_id/reviews",
+									"host": [
+										"student-conduct-tracker-api",
+										"onrender",
+										"com"
+									],
+									"path": [
+										"student",
+										":student_id",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "student_id",
+											"value": "813"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:43:49 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a283cae80f12a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"comment\": \"Mr. Dune is a very outstanding student.\",\n        \"created\": \"22-10-2023 14:34\",\n        \"downvotes\": 0,\n        \"isPositive\": true,\n        \"reviewID\": 1,\n        \"reviewer\": \"Bob Charles\",\n        \"studentID\": \"813\",\n        \"studentName\": \"Joe Dune\",\n        \"upvotes\": 0\n    },\n    {\n        \"comment\": \"A hardworking student.\",\n        \"created\": \"22-10-2023 14:40\",\n        \"downvotes\": 0,\n        \"isPositive\": true,\n        \"reviewID\": 2,\n        \"reviewer\": \"Dean Lee\",\n        \"studentID\": \"813\",\n        \"studentName\": \"Joe Dune\",\n        \"upvotes\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Staff 2 Upvote Review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check status code\r",
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Check the message in the response body\r",
+									"pm.test(\"Upvoted review successfully\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    \r",
+									"    // Assuming the message is the second element in the array\r",
+									"    const message = responseBody[1];\r",
+									"\r",
+									"    pm.expect(message).to.include(\"Review Upvoted\"); \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff2_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"upvote\": true\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/reviews/:review_id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"reviews",
+								":review_id"
+							],
+							"variable": [
+								{
+									"key": "review_id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "upvote: Upvotes the review with the provided id"
+					},
+					"response": [
+						{
+							"name": "(staff 2) Upvote Review",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "student-conduct-tracker-api.onrender.com/review/:review_id/upvote",
+									"host": [
+										"student-conduct-tracker-api",
+										"onrender",
+										"com"
+									],
+									"path": [
+										"review",
+										":review_id",
+										"upvote"
+									],
+									"variable": [
+										{
+											"key": "review_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:44:18 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a2847a3aaa12a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"comment\": \"Mr. Dune is a very outstanding student.\",\n        \"created\": \"22-10-2023 14:34\",\n        \"downvotes\": 0,\n        \"isPositive\": true,\n        \"reviewID\": 1,\n        \"reviewer\": \"Bob Charles\",\n        \"studentID\": \"813\",\n        \"studentName\": \"Joe Dune\",\n        \"upvotes\": 1\n    },\n    \"Review Upvoted\"\n]"
+						}
+					]
+				},
+				{
+					"name": "Staff 2 Downvote Review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Downvoted review successfully\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody).to.include(\"Review Downvoted Successfully\"); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff2_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"upvote\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/reviews/:review_id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"reviews",
+								":review_id"
+							],
+							"variable": [
+								{
+									"key": "review_id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "downvote: Downvotes the review with the provided id"
+					},
+					"response": [
+						{
+							"name": "(Staff 2) Downvote Review",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/review/:review_id/downvote",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"review",
+										":review_id",
+										"downvote"
+									],
+									"variable": [
+										{
+											"key": "review_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:45:09 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a285bbea6412a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"comment\": \"Mr. Dune is a very outstanding student.\",\n        \"created\": \"22-10-2023 14:34\",\n        \"downvotes\": 1,\n        \"isPositive\": true,\n        \"reviewID\": 1,\n        \"reviewer\": \"Bob Charles\",\n        \"studentID\": \"813\",\n        \"studentName\": \"Joe Dune\",\n        \"upvotes\": 0\n    },\n    \"Review Downvoted Successfully\"\n]"
+						}
+					]
+				},
+				{
+					"name": "Staff 1 Edit Review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Review Edited Successfully\", function () {\r",
+									"    const responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include(\"Review Edited\");\r",
+									"});\r",
+									"\r",
+									"// Get request data to check all fields entered\r",
+									"let jsonData = JSON.parse(request.data);\r",
+									"\r",
+									"pm.test(\"Updated Review Data Matches Input\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"    pm.expect(responseJson[0].isPositive).to.equal(jsonData.isPositive);\r",
+									"    pm.expect(responseJson[0].comment).to.equal(jsonData.comment);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff1_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isPositive\": true,\r\n    \"comment\" : \"Mr. Dune is an outstanding student, always hardworking.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/reviews/:review_id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"reviews",
+								":review_id"
+							],
+							"variable": [
+								{
+									"key": "review_id",
+									"value": "{{staff1_reviewID}}"
+								}
+							]
+						},
+						"description": "review_edit: Edits a review with the given id"
+					},
+					"response": [
+						{
+							"name": "Edit Review",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"isPositive\": true,\r\n    \"comment\" : \"Mr. Dune is an outstanding student, always hardworking.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/review/edit/:review_id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"review",
+										"edit",
+										":review_id"
+									],
+									"variable": [
+										{
+											"key": "review_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:47:08 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a288a3a8dc12a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"comment\": \"Mr. Dune is an outstanding student, always hardworking.\",\n        \"created\": \"22-10-2023 14:34\",\n        \"downvotes\": 1,\n        \"isPositive\": true,\n        \"reviewID\": 1,\n        \"reviewer\": \"Bob Charles\",\n        \"studentID\": \"813\",\n        \"studentName\": \"Joe Dune\",\n        \"upvotes\": 0\n    },\n    \"Review Edited\"\n]"
+						}
+					]
+				},
+				{
+					"name": "Staff 2 Delete Review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code: 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Review Deleted Successfully\", function () {\r",
+									"    const responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include(\"Review deleted successfully\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff2_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/reviews/:review_id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"reviews",
+								":review_id"
+							],
+							"variable": [
+								{
+									"key": "review_id",
+									"value": "{{staff2_reviewID}}"
+								}
+							]
+						},
+						"description": "review_delete: Deletes review with the provided ID"
+					},
+					"response": [
+						{
+							"name": "(Staff 2) Delete Review",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/review/delete/:review_id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"review",
+										"delete",
+										":review_id"
+									],
+									"variable": [
+										{
+											"key": "review_id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Sun, 22 Oct 2023 14:47:29 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/html; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "CF-Ray",
+									"value": "81a28928c97c12a7-MIA"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "x-render-origin-server",
+									"value": "gunicorn"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								},
+								{
+									"key": "alt-svc",
+									"value": "h3=\":443\"; ma=86400"
+								}
+							],
+							"cookie": [],
+							"body": "Review deleted successfully"
+						}
+					]
+				}
+			]
+		}
+	]
+}
