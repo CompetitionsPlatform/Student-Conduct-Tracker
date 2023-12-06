@@ -39,7 +39,7 @@ class UserUnitTests(unittest.TestCase):
 
     def test_new_admin (self):
         newAdmin = Admin("Bob", "Boblast",  "bobpass")
-        assert newAdmin.firstname == "Bob" and newAdmin.lastname == "Boblast"
+        assert newAdmin.firstname == "Bob" and newAdmin.lastname == "Bob"
 
     def test_new_staff (self):
         newStaff = Staff( "342", "Bob", "Charles", "bobpass", "bob.charles@staff.com", "10")
